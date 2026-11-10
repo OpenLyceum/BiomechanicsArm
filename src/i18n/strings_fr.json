@@ -1,21 +1,84 @@
 {
-  "title": "Modèle de Simulation",
+  "title": "Bras biomécanique",
   "screens": {
-    "sim": "Simulation"
+    "lab": "Labo"
+  },
+  "labels": {
+    "connect": "Connecter :",
+    "forceSensor": "Capteur de force",
+    "angleSensor": "Capteur de rotation",
+    "bluetooth": "Bluetooth",
+    "usb": "USB",
+    "demo": "Démo",
+    "disconnect": "Déconnecter",
+    "notConnected": "Non connecté",
+    "connecting": "Connexion…",
+    "connectionLost": "Connexion perdue",
+    "hardwareUnavailable": "Les capteurs réels exigent Chrome ou Edge, en HTTPS ou sur localhost.",
+    "zero": "Zéro",
+    "zeroBoth": "Mettre les deux capteurs à zéro",
+    "reverseDirection": "Inverser le sens",
+    "forcePattern": "{{value}} N",
+    "anglePattern": "{{value}}°",
+    "noReading": "—",
+    "recordPoint": "Enregistrer un point",
+    "tableFull": "Tableau plein",
+    "clearData": "Effacer les données",
+    "downloadCsv": "Télécharger le CSV",
+    "pointColumn": "#",
+    "angleColumn": "Angle (°)",
+    "tensionColumn": "Tension (N)",
+    "angleAxis": "Angle (°)",
+    "tensionAxis": "Tension (N)",
+    "swapAxes": "Permuter les axes",
+    "demoAngle": "Angle du bras (démo)",
+    "csvFileName": "bras-biomecanique-donnees"
   },
   "a11y": {
-    "screenSummary": {
-      "playArea": "La zone de jeu affiche le contenu principal de la simulation.",
-      "controlArea": "La zone de contrôle comporte un bouton Tout réinitialiser qui ramène la simulation à son état initial.",
-      "interactionHint": "Explorez la simulation en interagissant avec ses commandes."
-    },
-    "currentDetails": "La simulation est dans son état initial.",
-    "controls": {
-      "exampleControl": "Contrôle d'exemple"
+    "lab": {
+      "screenSummary": {
+        "playArea": "La zone de jeu comporte un panneau pour le capteur de force et un panneau pour le capteur de rotation, chacun avec sa connexion, une lecture en direct, un bouton Zéro et une case Inverser le sens. Un schéma montre le bras à l'angle mesuré, un tableau liste les points enregistrés et un graphique les trace.",
+        "controlArea": "La zone de contrôle comporte des boutons pour mettre les deux capteurs à zéro, enregistrer un point, effacer les données et les télécharger en fichier CSV, une case pour permuter les axes du graphique et un bouton Tout réinitialiser.",
+        "interactionHint": "Connectez les deux capteurs. Avec la ficelle décrochée et la tige pendant immobile, mettez les deux capteurs à zéro. Tenez ensuite le bras à une dizaine d'angles et enregistrez un point à chacun."
+      },
+      "currentDetailsPattern": "Capteur de force : {{force}}. Capteur de rotation : {{angle}}. Points enregistrés : {{count}}.",
+      "controls": {
+        "connectForceBluetooth": "Connecter le capteur de force par Bluetooth",
+        "connectForceUsb": "Connecter le capteur de force par USB",
+        "connectForceDemo": "Connecter le capteur de force simulé",
+        "disconnectForce": "Déconnecter le capteur de force",
+        "zeroForce": "Mettre le capteur de force à zéro",
+        "reverseForce": "Inverser le sens de la force",
+        "connectAngleBluetooth": "Connecter le capteur de rotation par Bluetooth",
+        "connectAngleUsb": "Connecter le capteur de rotation par USB",
+        "connectAngleDemo": "Connecter le capteur de rotation simulé",
+        "disconnectAngle": "Déconnecter le capteur de rotation",
+        "zeroAngle": "Mettre l'angle à zéro",
+        "reverseAngle": "Inverser le sens de rotation",
+        "zeroBothHelp": "À utiliser avec la ficelle décrochée et la tige pendant à la verticale, immobile.",
+        "recordPointHelp": "Ajoute l'angle et la tension actuels au tableau de données.",
+        "deletePointPattern": "Supprimer le point {{number}}",
+        "graph": "Graphique des points enregistrés",
+        "armDiagram": "Schéma du bras à l'angle mesuré",
+        "dataTable": "Tableau de données",
+        "demoAngleHelp": "Déplace le bras simulé. Zéro correspond à la tige pendant à la verticale; 90 degrés, à l'horizontale."
+      },
+      "responses": {
+        "pointRecordedPattern": "Point {{number}} enregistré : angle {{angle}} degrés, tension {{force}} newtons.",
+        "pointDeletedPattern": "Point {{number}} supprimé.",
+        "dataCleared": "Données effacées.",
+        "zeroed": "Capteurs mis à zéro.",
+        "csvDownloaded": "Fichier CSV téléchargé."
+      },
+      "keyboardHelp": {
+        "heading": "Mesures",
+        "recordPoint": "Enregistrer un point",
+        "zeroBoth": "Mettre les deux capteurs à zéro"
+      }
     }
   },
   "preferences": {
     "title": "Simulation",
-    "exampleToggle": "Exemple de bascule"
+    "demoMode": "Mode démo (capteurs simulés)"
   }
 }

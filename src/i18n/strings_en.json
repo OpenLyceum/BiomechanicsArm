@@ -1,21 +1,84 @@
 {
-  "title": "SceneryStack Template",
+  "title": "Biomechanics Arm",
   "screens": {
-    "sim": "Sim"
+    "lab": "Lab"
+  },
+  "labels": {
+    "connect": "Connect:",
+    "forceSensor": "Force sensor",
+    "angleSensor": "Rotary motion sensor",
+    "bluetooth": "Bluetooth",
+    "usb": "USB",
+    "demo": "Demo",
+    "disconnect": "Disconnect",
+    "notConnected": "Not connected",
+    "connecting": "Connecting…",
+    "connectionLost": "Connection lost",
+    "hardwareUnavailable": "Real sensors need Chrome or Edge, on HTTPS or localhost.",
+    "zero": "Zero",
+    "zeroBoth": "Zero both sensors",
+    "reverseDirection": "Reverse direction",
+    "forcePattern": "{{value}} N",
+    "anglePattern": "{{value}}°",
+    "noReading": "—",
+    "recordPoint": "Record point",
+    "tableFull": "Table full",
+    "clearData": "Clear data",
+    "downloadCsv": "Download CSV",
+    "pointColumn": "#",
+    "angleColumn": "Angle (°)",
+    "tensionColumn": "Tension (N)",
+    "angleAxis": "Angle (°)",
+    "tensionAxis": "Tension (N)",
+    "swapAxes": "Swap axes",
+    "demoAngle": "Demo arm angle",
+    "csvFileName": "biomechanics-arm-data"
   },
   "a11y": {
-    "screenSummary": {
-      "playArea": "The play area shows the main simulation content.",
-      "controlArea": "The control area has a Reset All button that returns the simulation to its starting state.",
-      "interactionHint": "Explore the simulation by interacting with its controls."
-    },
-    "currentDetails": "The simulation is in its initial state.",
-    "controls": {
-      "exampleControl": "Example control"
+    "lab": {
+      "screenSummary": {
+        "playArea": "The play area has a panel for the force sensor and a panel for the rotary motion sensor, each with its connection, a live reading, a Zero button and a Reverse direction checkbox. A diagram shows the arm at the measured angle, a table lists the recorded points, and a graph plots them.",
+        "controlArea": "The control area has buttons to zero both sensors, record a point, clear the data and download it as a CSV file, a checkbox to swap the graph axes, and a Reset All button.",
+        "interactionHint": "Connect both sensors. With the string unhooked and the rod hanging still, zero both sensors. Then hold the arm at about ten angles and record a point at each."
+      },
+      "currentDetailsPattern": "Force sensor: {{force}}. Rotary motion sensor: {{angle}}. Points recorded: {{count}}.",
+      "controls": {
+        "connectForceBluetooth": "Connect force sensor by Bluetooth",
+        "connectForceUsb": "Connect force sensor by USB",
+        "connectForceDemo": "Connect simulated force sensor",
+        "disconnectForce": "Disconnect force sensor",
+        "zeroForce": "Zero force sensor",
+        "reverseForce": "Reverse direction of force",
+        "connectAngleBluetooth": "Connect rotary motion sensor by Bluetooth",
+        "connectAngleUsb": "Connect rotary motion sensor by USB",
+        "connectAngleDemo": "Connect simulated rotary motion sensor",
+        "disconnectAngle": "Disconnect rotary motion sensor",
+        "zeroAngle": "Zero angle",
+        "reverseAngle": "Reverse direction of rotation",
+        "zeroBothHelp": "Use with the string unhooked and the rod hanging straight down, not moving.",
+        "recordPointHelp": "Adds the current angle and tension to the data table.",
+        "deletePointPattern": "Delete point {{number}}",
+        "graph": "Graph of the recorded points",
+        "armDiagram": "Diagram of the arm at the measured angle",
+        "dataTable": "Data table",
+        "demoAngleHelp": "Moves the simulated arm. Zero is hanging straight down; 90 degrees is horizontal."
+      },
+      "responses": {
+        "pointRecordedPattern": "Point {{number}} recorded: angle {{angle}} degrees, tension {{force}} newtons.",
+        "pointDeletedPattern": "Point {{number}} deleted.",
+        "dataCleared": "Data cleared.",
+        "zeroed": "Sensors zeroed.",
+        "csvDownloaded": "CSV file downloaded."
+      },
+      "keyboardHelp": {
+        "heading": "Measurements",
+        "recordPoint": "Record a point",
+        "zeroBoth": "Zero both sensors"
+      }
     }
   },
   "preferences": {
     "title": "Simulation",
-    "exampleToggle": "Example Toggle"
+    "demoMode": "Demo mode (simulated sensors)"
   }
 }

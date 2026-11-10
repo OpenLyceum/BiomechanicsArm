@@ -1,22 +1,27 @@
 {
-  "name": "scenerystack-template",
+  "name": "biomechanics-arm",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "GitHub template for OpenLyceum SceneryStack sims (rename + scaffold-screens for one or N screens).",
+  "description": "Live force and angle acquisition from PASCO wireless sensors for a model-arm (biomechanics) torque lab, built with SceneryStack.",
   "license": "AGPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OpenLyceum/SceneryStackTemplate.git"
+    "url": "https://github.com/OpenLyceum/BiomechanicsArm.git"
   },
   "keywords": [
-    "template",
     "simulation",
     "SceneryStack",
     "interactive",
     "physics",
     "education",
-    "pwa"
+    "pwa",
+    "torque",
+    "static-equilibrium",
+    "biomechanics",
+    "pasco",
+    "web-bluetooth",
+    "webusb"
   ],
   "scripts": {
     "start": "vite",
@@ -36,8 +41,6 @@
     "test:fuzz:quick": "node scripts/test-fuzz.ts 10",
     "test:fuzz:long": "node scripts/test-fuzz.ts 300",
     "icons": "node scripts/generate-icons.ts",
-    "rename": "node scripts/rename-sim.ts",
-    "scaffold-screens": "node scripts/scaffold-screens.ts",
     "clean": "rm -rf dist",
     "prepare": "git rev-parse --is-inside-work-tree >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
   },
@@ -54,7 +57,9 @@
     "typescript": "^7.0.2",
     "vite": "^8.3.6",
     "vite-plugin-pwa": "^2.0.0",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.0",
+    "@types/w3c-web-usb": "^1.0.14",
+    "@types/web-bluetooth": "^0.0.22"
   },
   "engines": {
     "node": ">=26"

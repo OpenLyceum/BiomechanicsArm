@@ -1,18 +1,21 @@
-# SceneryStack Template
+# Biomechanics Arm
 
 [![CI](../../actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
 
-A reusable SceneryStack simulation template for one or N screens, built with
+Live force and angle readings from two PASCO wireless sensors for a model-arm
+torque lab (static equilibrium, introductory physics), built with
 [SceneryStack](https://scenerystack.org/), Vite 8, TypeScript 7, and Biome 2.
 
 ## Features
 
-- SceneryStack scaffold with model/view separation (`rename` + `scaffold-screens` for one or N screens)
-- English, Spanish, and French localization via `StringManager`
-- Default and projector color profiles
-- Progressive Web App (installable, offline-capable)
-- Git hooks for Biome pre-commit checks
-- Shared GitHub Actions CI via `OpenLyceum/Baton`
+- Connects to a PASCO Wireless Force Acceleration Sensor (PS-3202) and a Wireless Rotary Motion Sensor (PS-3220) over Web Bluetooth, or over USB where the browser supports WebUSB (Chrome or Edge, on HTTPS or localhost)
+- Large live readouts of string tension (N) and arm angle (degrees)
+- Zero button and Reverse direction for each sensor, plus Zero both sensors
+- Record up to 15 points, delete or clear them, and download them as CSV for a spreadsheet
+- Scatter plot of the recorded points with a marker at the live reading, and swappable axes
+- Diagram of the arm at the measured angle, so a wrong sign is obvious
+- Demo mode (`?demo`, or Preferences → Simulation) with a simulated arm and sensors, for trying the lab with no hardware
+- Keyboard shortcuts (Alt+P records a point, Alt+0 zeroes both sensors), screen-reader descriptions, English, French and Spanish, default and projector colors, installable PWA
 
 ## Quick Start
 
@@ -21,6 +24,9 @@ npm install
 npm run icons    # generate PNG icons from public/icons/icon.svg
 npm start        # dev server → http://localhost:5173
 ```
+
+Open `http://localhost:5173/?demo` to try it without sensors. To check a sensor
+over USB before a lab, open `http://localhost:5173/scripts/probe/usb-probe.html`.
 
 ## Scripts
 
@@ -39,8 +45,6 @@ npm start        # dev server → http://localhost:5173
 | `npm run format` | Auto-format all files |
 | `npm run fix` | Lint + auto-fix |
 | `npm run icons` | Regenerate PNG icons from `public/icons/icon.svg` |
-| `npm run rename` | Sim-level fork/rename (`--id`, `--name`) |
-| `npm run scaffold-screens` | Emit N fleet-named screen packages from `sim-screen/` (`--shared-model` optional) |
 | `npm run release` | `check && lint && build && test`, then version patch + push tags |
 | `npm run clean` | Remove `dist/` |
 

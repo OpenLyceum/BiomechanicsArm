@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PASCO USB probe (force and rotary motion sensors)</title>
+<link rel="icon" href="data:,">
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; margin: 2rem; max-width: 60rem; }
+  h1 { font-size: 1.2rem; }
+  button { font: inherit; padding: .4rem .8rem; margin: 0 .4rem .4rem 0; }
+  pre { background: #111; color: #ddd; padding: 1rem; overflow-x: auto; white-space: pre-wrap; min-height: 12rem; }
+</style>
+</head>
+<body>
+<h1>PASCO USB probe: Wireless Force Acceleration (PS-3202) and Rotary Motion (PS-3220)</h1>
+<p>Bring-up tool, not part of the sim. It finds out how a sensor presents itself
+over USB and whether the sim's USB transport (written for the PS-3219 motion
+sensor) works on it. Use Chrome or Edge, served from <code>npm start</code>
+(<code>http://localhost:5173/scripts/probe/usb-probe.html</code>).</p>
+<ol>
+  <li>Close Capstone and SPARKvue. Plug <strong>one</strong> sensor in with its micro-USB cable and switch it on.</li>
+  <li>Press <em>1. WebUSB</em>. If the picker is empty, press <em>2. WebHID</em> instead.</li>
+  <li>For a force sensor press <em>3 channels</em>; for a rotary sensor press <em>1 channel</em>, then turn the shaft.</li>
+  <li>Press <em>Copy log</em> and send the log back. Repeat with the other sensor.</li>
+</ol>
+<p id="support"></p>
+<p>
+  <button type="button" id="usb"><b>1. WebUSB: pick, claim, wake</b></button>
+  <button type="button" id="hid"><b>2. WebHID: pick and listen</b></button>
+</p>
+<p>
+  <button type="button" id="stream1" disabled>Stream, 1 channel (rotary)</button>
+  <button type="button" id="stream3" disabled>Stream, 3 channels (force)</button>
+  <button type="button" id="stop" disabled>Stop</button>
+  <button type="button" id="copy">Copy log</button>
+  <button type="button" id="clear">Clear log</button>
+</p>
+<pre id="log"></pre>
+<script type="module">
+const PASCO_VENDOR_ID = 0x0945;
+const logElement = document.getElementById("log");
+const byId = (id) => document.getElementById(id);
+const hex = (bytes) => Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join(" ");
+const start = performance.now();
+
+function log(...parts) {
+  const text = parts.map((part) => (typeof part === "string" ? part : JSON.stringify(part))).join(" ");
+  logElement.textContent += `+${String(Math.round(performance.now() - start)).padStart(6)}ms ${text}\n`;
+  logElement.scrollTop = logElement.scrollHeight;
+}
+
+byId("support").innerHTML = ["usb", "hid", "bluetooth", "serial"]
+  .map((key) => `<b>navigator.${key}</b>: ${navigator[key] ? "yes" : "NO"}`)
+  .concat(`<b>isSecureContext</b>: ${window.isSecureContext}`)
+  .join(" · ");
+
+let device = null;
+let inEndpoint = 0;
+let outEndpoint = 0;
+let inBytes = 64;
+let reading = false;
+let logged = 0;
+
+async function write(serviceId, characteristicId, packet) {
+  const frame = Uint8Array.from([serviceId, characteristicId, ...packet]);
+  const result = await device.transferOut(outEndpoint, frame);
+  log("OUT", hex(frame), "→", result.status);
+}
+
+async function readLoop() {
+  reading = true;
+  const sinceAck = new Map();
+  while (reading && device?.opened) {
+    try {
+      const result = await device.transferIn(inEndpoint, inBytes);
+      if (result.status !== "ok" || !result.data) {
+        log("IN status", result.status);
+        if (result.status === "stall") {
+          await device.clearHalt("in", inEndpoint);
+        }
+        continue;
+      }
+      const bytes = new Uint8Array(result.data.buffer, result.data.byteOffset, result.data.byteLength);
+      // Log the first packets in full, then one in twenty, so the log stays readable.
+      logged++;
+      if (logged <= 40 || logged % 20 === 0) {
+        log("IN ", hex(bytes));
+      }
+      // Stream packets: [service, characteristic, sequence < 0x20, samples…]. Acknowledge every 8.
+      const serviceId = bytes[0] & 0x7f;
+      if (bytes.length >= 5 && serviceId > 0 && bytes[2] < 0x20) {
+        const count = (sinceAck.get(serviceId) ?? 0) + 1;
+        if (count >= 8) {
+          sinceAck.set(serviceId, 0);
+          await device.transferOut(outEndpoint, Uint8Array.from([serviceId, 5, 0, 0, 0, 0, bytes[2]]));
+        } else {
+          sinceAck.set(serviceId, count);
+        }
+      }
+    } catch (error) {
+      log("IN error:", String(error));
+      reading = false;
+    }
+  }
+  log("read loop ended");
+}
+
+byId("usb").addEventListener("click", async () => {
+  try {
+    device = await navigator.usb.requestDevice({ filters: [{ vendorId: PASCO_VENDOR_ID }] });
+    await device.open();
+    if (device.configuration === null) {
+      await device.selectConfiguration(1);
+    }
+    log("device", {
+      vendorId: `0x${device.vendorId.toString(16)}`,
+      productId: `0x${device.productId.toString(16)}`,
+      productName: device.productName,
+      manufacturerName: device.manufacturerName,
+      deviceClass: device.deviceClass,
+      interfaces: device.configuration.interfaces.map((each) => ({
+        number: each.interfaceNumber,
+        class: each.alternate.interfaceClass,
+        endpoints: each.alternate.endpoints.map(
+          (endpoint) => `${endpoint.direction} ${endpoint.endpointNumber} ${endpoint.type} ${endpoint.packetSize}B`,
+        ),
+      })),
+    });
+    const usbInterface = device.configuration.interfaces[0];
+    await device.claimInterface(usbInterface.interfaceNumber);
+    for (const endpoint of usbInterface.alternate.endpoints) {
+      if (endpoint.direction === "in" && inEndpoint === 0) {
+        inEndpoint = endpoint.endpointNumber;
+        inBytes = endpoint.packetSize;
+      }
+      if (endpoint.direction === "out" && outEndpoint === 0) {
+        outEndpoint = endpoint.endpointNumber;
+      }
+    }
+    log("claimed; IN", inEndpoint, "OUT", outEndpoint);
+
+    // Vendor requests the PS-3219's bridge needs before it carries bulk traffic.
+    const controlIn = async (request, value, index, length) => {
+      try {
+        const result = await device.controlTransferIn(
+          { requestType: "vendor", recipient: "device", request, value, index },
+          length,
+        );
+        return `${result.status} ${result.data ? hex(new Uint8Array(result.data.buffer)) : ""}`;
+      } catch (error) {
+        return String(error);
+      }
+    };
+    log("bridge status (0xed):", await controlIn(0xed, 0, 0, 2));
+    log("bridge config (0xa0):", await controlIn(0xa0, 0x01fc, 0x1000, 4));
+    log("bridge version (0xf2):", await controlIn(0xf2, 0, 0, 64));
+    const enabled = await device.controlTransferOut({
+      requestType: "vendor",
+      recipient: "device",
+      request: 0xfb,
+      value: 0,
+      index: 0x3500,
+    });
+    log("bridge enable (0xfb):", enabled.status);
+
+    readLoop();
+    await write(0, 2, [0x00]);
+    for (const id of ["stream1", "stream3", "stop"]) {
+      byId(id).disabled = false;
+    }
+  } catch (error) {
+    log("WebUSB failed:", String(error));
+  }
+});
+
+async function stream(channelCount) {
+  try {
+    logged = 0;
+    if (channelCount === 1) {
+      await write(0, 2, [0x37, 0x01, 0x00]); // rotary start
+    }
+    await write(0, 2, [0x07]); // stop any running sampler
+    for (let channel = 0; channel < channelCount; channel++) {
+      await write(channel + 1, 2, [0x01, 0x50, 0xc3, 0x00, 0x00, 0, 0]); // 50 ms
+    }
+    const startCommand = [0x06];
+    for (let channel = 0; channel < channelCount; channel++) {
+      startCommand.push(50, 0);
+    }
+    await write(0, 2, startCommand);
+  } catch (error) {
+    log("stream failed:", String(error));
+  }
+}
+byId("stream1").addEventListener("click", () => stream(1));
+byId("stream3").addEventListener("click", () => stream(3));
+byId("stop").addEventListener("click", async () => {
+  try {
+    await write(0, 2, [0x07]);
+  } catch (error) {
+    log("stop failed:", String(error));
+  }
+});
+
+byId("hid").addEventListener("click", async () => {
+  try {
+    const [hidDevice] = await navigator.hid.requestDevice({ filters: [{ vendorId: PASCO_VENDOR_ID }] });
+    if (!hidDevice) {
+      log("WebHID: nothing picked");
+      return;
+    }
+    await hidDevice.open();
+    log("HID device", {
+      productId: `0x${hidDevice.productId.toString(16)}`,
+      productName: hidDevice.productName,
+      collections: hidDevice.collections.map((collection) => ({
+        usagePage: collection.usagePage,
+        usage: collection.usage,
+        input: collection.inputReports.map((report) => report.reportId),
+        output: collection.outputReports.map((report) => report.reportId),
+        feature: collection.featureReports.map((report) => report.reportId),
+      })),
+    });
+    let reports = 0;
+    hidDevice.addEventListener("inputreport", (event) => {
+      reports++;
+      if (reports <= 40 || reports % 20 === 0) {
+        log("HID IN report", event.reportId, hex(new Uint8Array(event.data.buffer)));
+      }
+    });
+    log("listening for HID input reports (move the sensor)");
+  } catch (error) {
+    log("WebHID failed:", String(error));
+  }
+});
+
+byId("copy").addEventListener("click", () => navigator.clipboard.writeText(logElement.textContent));
+byId("clear").addEventListener("click", () => {
+  logElement.textContent = "";
+});
+</script>
+</body>
+</html>

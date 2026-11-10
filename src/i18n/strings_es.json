@@ -1,21 +1,84 @@
 {
-  "title": "Plantilla de Simulación",
+  "title": "Brazo biomecánico",
   "screens": {
-    "sim": "Simulación"
+    "lab": "Laboratorio"
+  },
+  "labels": {
+    "connect": "Conectar:",
+    "forceSensor": "Sensor de fuerza",
+    "angleSensor": "Sensor de rotación",
+    "bluetooth": "Bluetooth",
+    "usb": "USB",
+    "demo": "Demo",
+    "disconnect": "Desconectar",
+    "notConnected": "No conectado",
+    "connecting": "Conectando…",
+    "connectionLost": "Conexión perdida",
+    "hardwareUnavailable": "Los sensores reales requieren Chrome o Edge, en HTTPS o localhost.",
+    "zero": "Cero",
+    "zeroBoth": "Poner ambos sensores a cero",
+    "reverseDirection": "Invertir el sentido",
+    "forcePattern": "{{value}} N",
+    "anglePattern": "{{value}}°",
+    "noReading": "—",
+    "recordPoint": "Registrar punto",
+    "tableFull": "Tabla llena",
+    "clearData": "Borrar datos",
+    "downloadCsv": "Descargar CSV",
+    "pointColumn": "#",
+    "angleColumn": "Ángulo (°)",
+    "tensionColumn": "Tensión (N)",
+    "angleAxis": "Ángulo (°)",
+    "tensionAxis": "Tensión (N)",
+    "swapAxes": "Intercambiar ejes",
+    "demoAngle": "Ángulo del brazo (demo)",
+    "csvFileName": "brazo-biomecanico-datos"
   },
   "a11y": {
-    "screenSummary": {
-      "playArea": "El área de juego muestra el contenido principal de la simulación.",
-      "controlArea": "El área de control tiene un botón Restablecer todo que devuelve la simulación a su estado inicial.",
-      "interactionHint": "Explora la simulación interactuando con sus controles."
-    },
-    "currentDetails": "La simulación está en su estado inicial.",
-    "controls": {
-      "exampleControl": "Control de ejemplo"
+    "lab": {
+      "screenSummary": {
+        "playArea": "El área de juego tiene un panel para el sensor de fuerza y otro para el sensor de rotación, cada uno con su conexión, una lectura en vivo, un botón Cero y una casilla Invertir el sentido. Un diagrama muestra el brazo en el ángulo medido, una tabla enumera los puntos registrados y una gráfica los representa.",
+        "controlArea": "El área de control tiene botones para poner ambos sensores a cero, registrar un punto, borrar los datos y descargarlos como archivo CSV, una casilla para intercambiar los ejes de la gráfica y un botón Reiniciar todo.",
+        "interactionHint": "Conecta ambos sensores. Con la cuerda desenganchada y la varilla colgando en reposo, pon ambos sensores a cero. Luego sostén el brazo en unos diez ángulos y registra un punto en cada uno."
+      },
+      "currentDetailsPattern": "Sensor de fuerza: {{force}}. Sensor de rotación: {{angle}}. Puntos registrados: {{count}}.",
+      "controls": {
+        "connectForceBluetooth": "Conectar el sensor de fuerza por Bluetooth",
+        "connectForceUsb": "Conectar el sensor de fuerza por USB",
+        "connectForceDemo": "Conectar el sensor de fuerza simulado",
+        "disconnectForce": "Desconectar el sensor de fuerza",
+        "zeroForce": "Poner a cero el sensor de fuerza",
+        "reverseForce": "Invertir el sentido de la fuerza",
+        "connectAngleBluetooth": "Conectar el sensor de rotación por Bluetooth",
+        "connectAngleUsb": "Conectar el sensor de rotación por USB",
+        "connectAngleDemo": "Conectar el sensor de rotación simulado",
+        "disconnectAngle": "Desconectar el sensor de rotación",
+        "zeroAngle": "Poner a cero el ángulo",
+        "reverseAngle": "Invertir el sentido de rotación",
+        "zeroBothHelp": "Úsalo con la cuerda desenganchada y la varilla colgando en vertical, sin moverse.",
+        "recordPointHelp": "Añade el ángulo y la tensión actuales a la tabla de datos.",
+        "deletePointPattern": "Eliminar el punto {{number}}",
+        "graph": "Gráfica de los puntos registrados",
+        "armDiagram": "Diagrama del brazo en el ángulo medido",
+        "dataTable": "Tabla de datos",
+        "demoAngleHelp": "Mueve el brazo simulado. Cero es colgando en vertical; 90 grados es horizontal."
+      },
+      "responses": {
+        "pointRecordedPattern": "Punto {{number}} registrado: ángulo {{angle}} grados, tensión {{force}} newtons.",
+        "pointDeletedPattern": "Punto {{number}} eliminado.",
+        "dataCleared": "Datos borrados.",
+        "zeroed": "Sensores puestos a cero.",
+        "csvDownloaded": "Archivo CSV descargado."
+      },
+      "keyboardHelp": {
+        "heading": "Mediciones",
+        "recordPoint": "Registrar un punto",
+        "zeroBoth": "Poner ambos sensores a cero"
+      }
     }
   },
   "preferences": {
     "title": "Simulación",
-    "exampleToggle": "Ejemplo de alternancia"
+    "demoMode": "Modo demo (sensores simulados)"
   }
 }
