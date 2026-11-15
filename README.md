@@ -42,7 +42,8 @@ over USB before a lab, open `http://localhost:5173/scripts/probe/usb-probe.html`
 | `npm run test:fuzz:long` | Longer fuzz smoke (300s) |
 | `npm run check` | TypeScript type check |
 | `npm run lint` | Biome lint check |
-| `npm run knip` | Report unused files, exports, and dependencies (manual check) |
+| `npm run check:unused` / `npm run knip` | Report unused files, exports, and dependencies (manual check) |
+| `npm run check:architecture` | dependency-cruiser layer and cycle rules on `src/` (manual check) |
 | `npm run format` | Auto-format all files |
 | `npm run fix` | Lint + auto-fix |
 | `npm run icons` | Regenerate PNG icons from `public/icons/icon.svg` |
