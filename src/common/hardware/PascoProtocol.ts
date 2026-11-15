@@ -49,7 +49,7 @@ const STOP_SAMPLING = 0x07;
 const RESULT = 0xc0;
 
 /** Streamed packets carry a five-bit sequence number; anything at or above is a reply or event. */
-export const STREAM_SEQUENCE_MODULUS = 0x20;
+const STREAM_SEQUENCE_MODULUS = 0x20;
 
 /** Acknowledge every this many packets per service, or the device stops sending. */
 export const STREAM_ACK_INTERVAL = 8;

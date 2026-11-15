@@ -9,7 +9,7 @@
 
 import { TransportKind, type TransportKindValue } from "./PascoTransport.js";
 
-export const TransportStatus = {
+const TransportStatus = {
   AVAILABLE: "available",
   /** Not a browser (unit test, server-side render). */
   NO_BROWSER: "noBrowser",
@@ -19,9 +19,9 @@ export const TransportStatus = {
   UNSUPPORTED_BROWSER: "unsupportedBrowser",
 } as const;
 
-export type TransportStatusValue = (typeof TransportStatus)[keyof typeof TransportStatus];
+type TransportStatusValue = (typeof TransportStatus)[keyof typeof TransportStatus];
 
-export function getTransportStatus(kind: TransportKindValue): TransportStatusValue {
+function getTransportStatus(kind: TransportKindValue): TransportStatusValue {
   if (kind === TransportKind.DEMO) {
     return TransportStatus.AVAILABLE;
   }
