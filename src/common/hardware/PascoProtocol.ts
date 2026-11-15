@@ -116,7 +116,10 @@ export function isStreamPacket(data: Uint8Array): boolean {
   return data.length >= 3 && (data[0] ?? 0xff) < STREAM_SEQUENCE_MODULUS;
 }
 
-/** Raw force count → newtons on the factory line. */
+/**
+ * Raw force count → newtons on the factory line.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export function rawForceToNewtons(raw: number): number {
   return ((FORCE_RAW_AT_ZERO - raw) * FORCE_REFERENCE_NEWTONS) / (FORCE_RAW_AT_ZERO - FORCE_RAW_AT_REFERENCE);
 }

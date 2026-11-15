@@ -31,7 +31,10 @@ import {
 import { countsToRadians, ROTARY_COUNTS_PER_REVOLUTION } from "./PascoProtocol.js";
 import type { TSensorDevice } from "./SensorDevice.js";
 
-/** String tension in N holding the demo arm at sensor angle θ (radians from hanging). */
+/**
+ * String tension in N holding the demo arm at sensor angle θ (radians from hanging).
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export function demoTension(sensorAngle: number): number {
   const alpha = sensorAngle - Math.PI / 2;
   if (alpha <= 0) {

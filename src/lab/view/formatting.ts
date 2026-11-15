@@ -4,7 +4,10 @@
  * Axis helpers for the graph. Pure.
  */
 
-/** A "nice" tick spacing (1, 2 or 5 × 10ⁿ) giving about `targetTicks` ticks across `span`. */
+/**
+ * A "nice" tick spacing (1, 2 or 5 × 10ⁿ) giving about `targetTicks` ticks across `span`.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export function niceStep(span: number, targetTicks = 5): number {
   if (!(span > 0 && Number.isFinite(span))) {
     return 1;
