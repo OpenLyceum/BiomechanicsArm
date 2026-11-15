@@ -118,7 +118,7 @@ npm run lint && npm run check && npm run build && npm test
 | `npm run test:fuzz:quick` | 10s fuzz |
 | `npm run test:fuzz:long` | 300s fuzz |
 | `npm run icons` | Regenerate PWA icons; seed missing screenshots, preserve existing ones |
-| `npm run release` | `check && lint && build && test`, then version patch + push tags |
+| `npm run release` | `check && lint && check:architecture && build && test`, then version patch + push tags |
 
 `src/init.ts` reads `version` from `package.json`, so the patch bump shows up in the About dialog
 without a second edit.
