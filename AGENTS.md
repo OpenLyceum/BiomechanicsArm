@@ -36,6 +36,8 @@ changing hardware or model code.
 | `src/lab/model/LabModel.ts` | Two channels, recorded points, demo arm angle |
 | `src/lab/model/dataCsv.ts` | `DataPoint` and the CSV builder (pure) |
 | `src/lab/view/LabScreenView.ts` | Three-column layout, shortcuts, `pdomOrder`, CSV download |
+| `src/lab/view/SensorColumn.ts` | Left column: both sensor panels, Zero both, hardware note |
+| `src/lab/view/downloadText.ts` | Browser file download helper for CSV export |
 | `src/lab/view/SensorPanel.ts` | Connect buttons, status, large readout, Zero, Reverse direction |
 | `src/lab/view/DataTableNode.ts` | Fixed-height table with a delete button per row |
 | `src/lab/view/PointsGraphNode.ts` | bamboo scatter plot with autoscaled axes and a live marker |
