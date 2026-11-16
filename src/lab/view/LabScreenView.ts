@@ -56,7 +56,7 @@ const LEFT_WIDTH: number = LAB_SCREEN_VIEW_SETTINGS.LEFT_WIDTH;
 const CENTER_WIDTH: number = LAB_SCREEN_VIEW_SETTINGS.CENTER_WIDTH;
 const DIAGRAM_HEIGHT: number = LAB_SCREEN_VIEW_SETTINGS.DIAGRAM_HEIGHT;
 const BUTTON_FONT = new PhetFont({ size: LAB_SCREEN_VIEW_SETTINGS.BUTTON_FONT_SIZE, weight: "bold" });
-const FONT = new PhetFont(LAB_SCREEN_VIEW_SETTINGS.FONT_FONT_SIZE);
+const FONT = new PhetFont(LAB_SCREEN_VIEW_SETTINGS.FONT_SIZE);
 
 export class LabScreenView extends ScreenView {
   public constructor(model: LabModel, providedOptions: LabScreenViewOptions) {

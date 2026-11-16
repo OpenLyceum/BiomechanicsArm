@@ -143,11 +143,11 @@ export const DATA_CSV_SETTINGS = {
 export const ARM_DIAGRAM_NODE_SETTINGS = {
   ZERO_LINE_LINE_DASH_DASH: 4, // px
 
-  /** Where along the rod the string is tied and the cylinder sits, as fractions of its length. */
+  /** Fraction of rod length from the pivot to the string attachment. */
   STRING_FRACTION: 0.5,
-  /** Where along the rod the string is tied and the cylinder sits, as fractions of its length. */
+  /** Fraction of rod length from the pivot to the cylinder. */
   CYLINDER_FRACTION: 0.88,
-  /** Where along the rod the string is tied and the cylinder sits, as fractions of its length. */
+  /** Radius of the angle arc drawn around the pivot (px). */
   ARC_RADIUS: 26,
   BACKGROUND_CORNER_RADIUS: 4,
   ARC_LINE_WIDTH: 2,
@@ -166,7 +166,7 @@ export const DATA_TABLE_NODE_SETTINGS = {
   HEADER_TEXT_MAX_WIDTH_OFFSET: 6, // px
   CONSTRUCTOR_RIGHT_OFFSET: 6, // px
 
-  FONT_FONT_SIZE: 12,
+  FONT_SIZE: 12,
   HEADER_FONT_SIZE: 12,
   ROW_HEIGHT: 17,
   HEADER_HEIGHT: 22,
@@ -191,18 +191,18 @@ export const LAB_SCREEN_VIEW_SETTINGS = {
   DATA_CONTROLS_TOP_OFFSET: 360, // px
   CONSTRUCTOR_DATA_CONTROLS_TOP_OFFSET: 52, // px
 
-  /** Whether the simulated sensors and the demo slider are offered. */
+  /** Outer margin from the screen edge (px). */
   MARGIN: 15,
-  /** Whether the simulated sensors and the demo slider are offered. */
+  /** Gap between the left, center, and right columns (px). */
   COLUMN_SPACING: 14,
-  /** Whether the simulated sensors and the demo slider are offered. */
+  /** Width of the left control column (px). */
   LEFT_WIDTH: 286,
-  /** Whether the simulated sensors and the demo slider are offered. */
+  /** Width of the center diagram / demo column (px). */
   CENTER_WIDTH: 262,
-  /** Whether the simulated sensors and the demo slider are offered. */
+  /** Height of the arm diagram (px). */
   DIAGRAM_HEIGHT: 150,
   BUTTON_FONT_SIZE: 14,
-  FONT_FONT_SIZE: 12,
+  FONT_SIZE: 12,
   PUSH_BUTTON_X_MARGIN: 12,
   PUSH_BUTTON_Y_MARGIN: 7,
   LEFT_COLUMN_SPACING: 10,
@@ -242,12 +242,13 @@ export const POINTS_GRAPH_NODE_SETTINGS = {
 export const SENSOR_PANEL_SETTINGS = {
   CONNECT_BUTTON_MAX_WIDTH: 58, // px
   ITEM_5_SPACING: 12, // px
-  PHET_FONT_FONT_SIZE: 10, // px
+  /** Font size for the diagnostics readout (px). */
+  DIAGNOSTIC_FONT_SIZE: 10, // px
 
   READOUT_TEXT_MAX_WIDTH_OFFSET: 16, // px
   REVERSE_CHECKBOX_MAX_WIDTH_OFFSET: 110, // px
 
-  FONT_FONT_SIZE: 12,
+  FONT_SIZE: 12,
   BUTTON_FONT_SIZE: 13,
   READOUT_FONT_SIZE: 30,
   READOUT_HEIGHT: 46,

@@ -18,7 +18,7 @@ import { FLAT_PANEL_PUSH_BUTTON_OPTIONS, LIGHT_SURFACE_TEXT_FILL } from "../../c
 import { StringManager } from "../../i18n/StringManager.js";
 import { ANGLE_DECIMALS, type DataPoint, FORCE_DECIMALS } from "../model/dataCsv.js";
 
-const FONT = new PhetFont(DATA_TABLE_NODE_SETTINGS.FONT_FONT_SIZE);
+const FONT = new PhetFont(DATA_TABLE_NODE_SETTINGS.FONT_SIZE);
 const HEADER_FONT = new PhetFont({ size: DATA_TABLE_NODE_SETTINGS.HEADER_FONT_SIZE, weight: "bold" });
 const ROW_HEIGHT: number = DATA_TABLE_NODE_SETTINGS.ROW_HEIGHT;
 const HEADER_HEIGHT: number = DATA_TABLE_NODE_SETTINGS.HEADER_HEIGHT;

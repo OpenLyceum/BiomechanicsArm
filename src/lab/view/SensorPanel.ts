@@ -21,7 +21,7 @@ import { isTransportAvailable } from "../../common/hardware/transportSupport.js"
 import { StringManager } from "../../i18n/StringManager.js";
 import { CONNECTION_LOST, ConnectionState, type SensorChannel } from "../model/SensorChannel.js";
 
-const FONT = new PhetFont(SENSOR_PANEL_SETTINGS.FONT_FONT_SIZE);
+const FONT = new PhetFont(SENSOR_PANEL_SETTINGS.FONT_SIZE);
 const BUTTON_FONT = new PhetFont({ size: SENSOR_PANEL_SETTINGS.BUTTON_FONT_SIZE, weight: "bold" });
 const READOUT_FONT = new PhetFont({ size: SENSOR_PANEL_SETTINGS.READOUT_FONT_SIZE, weight: "bold" });
 const READOUT_HEIGHT: number = SENSOR_PANEL_SETTINGS.READOUT_HEIGHT;
@@ -224,7 +224,7 @@ export class SensorPanel extends BiomechanicsArmPanel {
           ...(options.showDiagnostics
             ? [
                 new Text(channel.diagnosticProperty, {
-                  font: new PhetFont(SENSOR_PANEL_SETTINGS.PHET_FONT_FONT_SIZE),
+                  font: new PhetFont(SENSOR_PANEL_SETTINGS.DIAGNOSTIC_FONT_SIZE),
                   fill: BiomechanicsArmColors.warningColorProperty,
                   maxWidth: innerWidth,
                 }),
