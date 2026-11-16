@@ -97,7 +97,7 @@ export class DataTableNode extends Node {
         ),
         listener: () => options.onDelete(i),
       });
-      deleteButton.right = width - DATA_TABLE_NODE_SETTINGS.CONSTRUCTOR_RIGHT_OFFSET;
+      deleteButton.right = width - DATA_TABLE_NODE_SETTINGS.DELETE_BUTTON_RIGHT_INSET;
       deleteButton.centerY = centerY;
       const row = new Node({ children: [index, angle, force, deleteButton], visible: false });
       rows.push(row);

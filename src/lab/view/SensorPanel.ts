@@ -196,21 +196,21 @@ export class SensorPanel extends BiomechanicsArmPanel {
     super(
       new VBox({
         align: "left",
-        spacing: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_SPACING,
+        spacing: SENSOR_PANEL_SETTINGS.SPACING,
         children: [
           new Text(options.title, {
-            font: new PhetFont({ size: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_FONT_SIZE, weight: "bold" }),
+            font: new PhetFont({ size: SENSOR_PANEL_SETTINGS.TITLE_FONT_SIZE, weight: "bold" }),
             fill: options.color,
             maxWidth: innerWidth,
           }),
           new Text(statusProperty, { font: FONT, fill: statusFillProperty, maxWidth: innerWidth }),
           new HBox({
-            spacing: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_SPACING,
+            spacing: SENSOR_PANEL_SETTINGS.SPACING,
             children: [
               new Text(labels.connectStringProperty, {
                 font: FONT,
                 fill: BiomechanicsArmColors.textColorProperty,
-                maxWidth: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_MAX_WIDTH,
+                maxWidth: SENSOR_PANEL_SETTINGS.CONNECT_LABEL_MAX_WIDTH,
                 visibleProperty: disconnectedProperty,
               }),
               bluetoothButton,

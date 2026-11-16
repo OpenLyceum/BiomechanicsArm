@@ -93,14 +93,14 @@ export const BIOMECHANICS_ARM_PANEL_SETTINGS = {
 
 /** Settings for common/BiomechanicsArmScreenIcons.ts. Layout lengths are in px; counts and ratios are dimensionless. */
 export const BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS = {
-  CREATE_LAB_ICON_START_X_SEGMENT_2: 250, // px
-  CREATE_LAB_ICON_START_Y_SEGMENT_2: 260, // px
-  CREATE_LAB_ICON_END_X_SEGMENT_2: 410, // px
-  CREATE_LAB_ICON_END_Y_SEGMENT_2: 40, // px
+  CREATE_LAB_ICON_ROD_START_X: 250, // px
+  CREATE_LAB_ICON_ROD_START_Y: 260, // px
+  CREATE_LAB_ICON_ROD_END_X: 410, // px
+  CREATE_LAB_ICON_ROD_END_Y: 40, // px
   CREATE_LAB_ICON_ITEM_4_LINE_WIDTH: 22, // px
   CREATE_LAB_ICON_ITEM_5_X: 392, // px
   CREATE_LAB_ICON_ITEM_5_Y: 65, // px
-  CREATE_LAB_ICON_RADIUS_SEGMENT_2: 20, // px
+  CREATE_LAB_ICON_PIVOT_RADIUS: 20, // px
   CREATE_LAB_ICON_ITEM_6_X: 250, // px
   CREATE_LAB_ICON_ITEM_6_Y: 260, // px
 
@@ -164,7 +164,7 @@ export const ARM_DIAGRAM_NODE_SETTINGS = {
 export const DATA_TABLE_NODE_SETTINGS = {
   TEXT_MAX_WIDTH_OFFSET: 58, // px
   HEADER_TEXT_MAX_WIDTH_OFFSET: 6, // px
-  CONSTRUCTOR_RIGHT_OFFSET: 6, // px
+  DELETE_BUTTON_RIGHT_INSET: 6, // px
 
   FONT_SIZE: 12,
   HEADER_FONT_SIZE: 12,
@@ -186,10 +186,10 @@ export const LAB_SCREEN_VIEW_SETTINGS = {
   CLEAR_DATA_PUSH_BUTTON_MAX_WIDTH: 120, // px
   DOWNLOAD_CSV_PUSH_BUTTON_MAX_WIDTH: 140, // px
 
-  CONSTRUCTOR_Y_OFFSET: 6, // px
+  GRAPH_TOP_GAP: 6, // px
   DATA_CONTROLS_LEFT_OFFSET: 40, // px
   DATA_CONTROLS_TOP_OFFSET: 360, // px
-  CONSTRUCTOR_DATA_CONTROLS_TOP_OFFSET: 52, // px
+  DATA_CONTROLS_GRAPH_GAP: 52, // px
 
   /** Outer margin from the screen edge (px). */
   MARGIN: 15,
@@ -221,7 +221,7 @@ export const LAB_SCREEN_VIEW_SETTINGS = {
 
 /** Settings for lab/view/PointsGraphNode.ts. Layout lengths are in px; counts and ratios are dimensionless. */
 export const POINTS_GRAPH_NODE_SETTINGS = {
-  CONSTRUCTOR_TOP_OFFSET: 24, // px
+  X_LABEL_TOP_GAP: 24, // px
 
   LABEL_FONT_SIZE: 13,
   TICK_FONT_SIZE: 11,
@@ -258,9 +258,9 @@ export const SENSOR_PANEL_SETTINGS = {
   ZERO_BUTTON_MAX_WIDTH: 60,
   ZERO_BUTTON_X_MARGIN: 10,
   ZERO_BUTTON_Y_MARGIN: 5,
-  CONSTRUCTOR_SPACING: 6,
-  CONSTRUCTOR_FONT_SIZE: 15,
-  CONSTRUCTOR_MAX_WIDTH: 70,
+  SPACING: 6,
+  TITLE_FONT_SIZE: 15,
+  CONNECT_LABEL_MAX_WIDTH: 70,
 } as const;
 
 /** Settings for preferences/BiomechanicsArmPreferencesNode.ts. Layout lengths are in px; counts and ratios are dimensionless. */
@@ -268,7 +268,7 @@ export const BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS = {
   HEADER_FONT_SIZE: 18,
   DEMO_MODE_CHECKBOX_FONT_SIZE: 14,
   DEMO_MODE_CHECKBOX_SPACING: 8,
-  CONSTRUCTOR_SPACING: 12,
+  SPACING: 12,
 } as const;
 
 BiomechanicsArmNamespace.register("BiomechanicsArmConstants", {

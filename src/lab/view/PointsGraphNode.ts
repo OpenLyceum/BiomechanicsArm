@@ -156,7 +156,7 @@ export class PointsGraphNode extends Node {
         xLabel.fill = angleOnX ? BiomechanicsArmColors.angleColorProperty : BiomechanicsArmColors.forceColorProperty;
         yLabel.fill = angleOnX ? BiomechanicsArmColors.forceColorProperty : BiomechanicsArmColors.angleColorProperty;
         xLabel.centerX = viewWidth / 2;
-        xLabel.top = viewHeight + POINTS_GRAPH_NODE_SETTINGS.CONSTRUCTOR_TOP_OFFSET;
+        xLabel.top = viewHeight + POINTS_GRAPH_NODE_SETTINGS.X_LABEL_TOP_GAP;
         yLabel.centerY = viewHeight / 2;
         yLabel.right = POINTS_GRAPH_NODE_SETTINGS.RIGHT_RIGHT;
       },

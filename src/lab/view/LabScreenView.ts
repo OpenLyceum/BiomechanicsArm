@@ -184,7 +184,7 @@ export class LabScreenView extends ScreenView {
       { viewWidth: graphWidth, viewHeight: LAB_SCREEN_VIEW_SETTINGS.GRAPH_VIEW_HEIGHT },
     );
     graph.x = graphLeft;
-    graph.y = bounds.minY + MARGIN + LAB_SCREEN_VIEW_SETTINGS.CONSTRUCTOR_Y_OFFSET;
+    graph.y = bounds.minY + MARGIN + LAB_SCREEN_VIEW_SETTINGS.GRAPH_TOP_GAP;
 
     const swapAxesCheckbox = new Checkbox(
       model.axesSwappedProperty,
@@ -231,9 +231,7 @@ export class LabScreenView extends ScreenView {
       ],
       left: graphLeft - LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_LEFT_OFFSET,
       top:
-        graph.y +
-        LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_TOP_OFFSET +
-        LAB_SCREEN_VIEW_SETTINGS.CONSTRUCTOR_DATA_CONTROLS_TOP_OFFSET,
+        graph.y + LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_TOP_OFFSET + LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_GRAPH_GAP,
     });
 
     const resetAllButton = new ResetAllButton({

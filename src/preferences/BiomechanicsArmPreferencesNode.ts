@@ -44,7 +44,7 @@ export class BiomechanicsArmPreferencesNode extends VBox {
 
     super({
       align: "left",
-      spacing: BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS.CONSTRUCTOR_SPACING,
+      spacing: BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS.SPACING,
       children: [header, demoModeCheckbox],
     });
   }
