@@ -8,6 +8,7 @@
 import { Circle, Line, Node, Rectangle } from "scenerystack/scenery";
 import { ScreenIcon } from "scenerystack/sim";
 import BiomechanicsArmColors from "../BiomechanicsArmColors.js";
+import { BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS } from "../BiomechanicsArmConstants.js";
 
 const W = 548;
 const H = 373;
@@ -30,16 +31,48 @@ export function createLabIcon(): ScreenIcon {
       children: [
         background(),
         // String to the force sensor
-        new Line(120, 150, 330, 150, { stroke: BiomechanicsArmColors.forceColorProperty, lineWidth: 8 }),
-        new Rectangle(80, 120, 44, 60, { cornerRadius: 6, fill: BiomechanicsArmColors.forceColorProperty }),
+        new Line(
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_START_X,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_START_Y,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_END_X,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_END_Y,
+          {
+            stroke: BiomechanicsArmColors.forceColorProperty,
+            lineWidth: BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_LINE_WIDTH,
+          },
+        ),
+        new Rectangle(
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_X,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_Y,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_WIDTH,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_HEIGHT,
+          {
+            cornerRadius: BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_CORNER_RADIUS,
+            fill: BiomechanicsArmColors.forceColorProperty,
+          },
+        ),
         // Rod, from the pivot up and to the right
-        new Line(250, 260, 410, 40, {
-          stroke: BiomechanicsArmColors.rodColorProperty,
-          lineWidth: 22,
-          lineCap: "round",
+        new Line(
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_START_X_SEGMENT_2,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_START_Y_SEGMENT_2,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_END_X_SEGMENT_2,
+          BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_END_Y_SEGMENT_2,
+          {
+            stroke: BiomechanicsArmColors.rodColorProperty,
+            lineWidth: BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_ITEM_4_LINE_WIDTH,
+            lineCap: "round",
+          },
+        ),
+        new Circle(BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_RADIUS, {
+          x: BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_ITEM_5_X,
+          y: BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_ITEM_5_Y,
+          fill: BiomechanicsArmColors.cylinderColorProperty,
         }),
-        new Circle(34, { x: 392, y: 65, fill: BiomechanicsArmColors.cylinderColorProperty }),
-        new Circle(20, { x: 250, y: 260, fill: BiomechanicsArmColors.angleColorProperty }),
+        new Circle(BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_RADIUS_SEGMENT_2, {
+          x: BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_ITEM_6_X,
+          y: BIOMECHANICS_ARM_SCREEN_ICONS_SETTINGS.CREATE_LAB_ICON_ITEM_6_Y,
+          fill: BiomechanicsArmColors.angleColorProperty,
+        }),
       ],
     }),
   );

@@ -1,3 +1,4 @@
+import { BLUETOOTH_PASCO_TRANSPORT_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * BluetoothPascoTransport.ts
  *
@@ -11,7 +12,7 @@ import { PASCO_CHARACTERISTIC, parsePascoUuid, pascoUuid } from "./PascoProtocol
 import { DeviceSelectionCancelled, type PacketListener, type TPascoTransport } from "./PascoTransport.js";
 
 /** Most channels any supported sensor has, plus the device service. */
-const MAX_SERVICES = 4;
+const MAX_SERVICES: number = BLUETOOTH_PASCO_TRANSPORT_SETTINGS.MAX_SERVICES;
 
 const OPTIONAL_SERVICES = Array.from({ length: MAX_SERVICES }, (_unused, serviceId) =>
   pascoUuid(serviceId, PASCO_CHARACTERISTIC.SERVICE),

@@ -1,3 +1,4 @@
+import { SENSOR_PANEL_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * SensorPanel.ts
  *
@@ -20,10 +21,10 @@ import { isTransportAvailable } from "../../common/hardware/transportSupport.js"
 import { StringManager } from "../../i18n/StringManager.js";
 import { CONNECTION_LOST, ConnectionState, type SensorChannel } from "../model/SensorChannel.js";
 
-const FONT = new PhetFont(12);
-const BUTTON_FONT = new PhetFont({ size: 13, weight: "bold" });
-const READOUT_FONT = new PhetFont({ size: 30, weight: "bold" });
-const READOUT_HEIGHT = 46;
+const FONT = new PhetFont(SENSOR_PANEL_SETTINGS.FONT_FONT_SIZE);
+const BUTTON_FONT = new PhetFont({ size: SENSOR_PANEL_SETTINGS.BUTTON_FONT_SIZE, weight: "bold" });
+const READOUT_FONT = new PhetFont({ size: SENSOR_PANEL_SETTINGS.READOUT_FONT_SIZE, weight: "bold" });
+const READOUT_HEIGHT: number = SENSOR_PANEL_SETTINGS.READOUT_HEIGHT;
 
 export type SensorPanelOptions = {
   readonly title: TReadOnlyProperty<string>;
@@ -103,8 +104,8 @@ export class SensorPanel extends BiomechanicsArmPanel {
         accessibleName,
         visibleProperty,
         listener,
-        xMargin: 8,
-        yMargin: 5,
+        xMargin: SENSOR_PANEL_SETTINGS.TEXT_BUTTON_X_MARGIN,
+        yMargin: SENSOR_PANEL_SETTINGS.TEXT_BUTTON_Y_MARGIN,
       });
 
     // Synchronous listeners so the browser still sees a user gesture; connect() never rejects.
@@ -127,7 +128,7 @@ export class SensorPanel extends BiomechanicsArmPanel {
           channel.connect(kind).catch(() => undefined);
         },
         offered,
-        58,
+        SENSOR_PANEL_SETTINGS.CONNECT_BUTTON_MAX_WIDTH,
       );
     };
 
@@ -155,14 +156,14 @@ export class SensorPanel extends BiomechanicsArmPanel {
         connected ? StringUtils.fillIn(pattern, { value: toFixed(value, options.decimals) }) : none,
     );
     const readoutBackground = new Rectangle(0, 0, innerWidth, READOUT_HEIGHT, {
-      cornerRadius: 4,
+      cornerRadius: SENSOR_PANEL_SETTINGS.READOUT_BACKGROUND_CORNER_RADIUS,
       fill: BiomechanicsArmColors.chartBackgroundColorProperty,
       stroke: BiomechanicsArmColors.panelBorderColorProperty,
     });
     const readoutText = new Text(readoutProperty, {
       font: READOUT_FONT,
       fill: options.color,
-      maxWidth: innerWidth - 16,
+      maxWidth: innerWidth - SENSOR_PANEL_SETTINGS.READOUT_TEXT_MAX_WIDTH_OFFSET,
     });
     readoutText.boundsProperty.link(() => {
       readoutText.center = readoutBackground.center;
@@ -171,19 +172,23 @@ export class SensorPanel extends BiomechanicsArmPanel {
     // ── Zero and Reverse direction ─────────────────────────────────────────────
     const zeroButton = new RectangularPushButton({
       ...FLAT_PANEL_PUSH_BUTTON_OPTIONS,
-      content: new Text(labels.zeroStringProperty, { font: BUTTON_FONT, fill: LIGHT_SURFACE_TEXT_FILL, maxWidth: 60 }),
+      content: new Text(labels.zeroStringProperty, {
+        font: BUTTON_FONT,
+        fill: LIGHT_SURFACE_TEXT_FILL,
+        maxWidth: SENSOR_PANEL_SETTINGS.ZERO_BUTTON_MAX_WIDTH,
+      }),
       accessibleName: options.accessibleNames.zero,
       enabledProperty: connectedProperty,
       listener: () => channel.zero(),
-      xMargin: 10,
-      yMargin: 5,
+      xMargin: SENSOR_PANEL_SETTINGS.ZERO_BUTTON_X_MARGIN,
+      yMargin: SENSOR_PANEL_SETTINGS.ZERO_BUTTON_Y_MARGIN,
     });
     const reverseCheckbox = new Checkbox(
       channel.reversedProperty,
       new Text(labels.reverseDirectionStringProperty, {
         font: FONT,
         fill: BiomechanicsArmColors.textColorProperty,
-        maxWidth: innerWidth - 110,
+        maxWidth: innerWidth - SENSOR_PANEL_SETTINGS.REVERSE_CHECKBOX_MAX_WIDTH_OFFSET,
       }),
       { ...BIOMECHANICS_ARM_CHECKBOX_OPTIONS, accessibleName: options.accessibleNames.reverse },
     );
@@ -191,21 +196,21 @@ export class SensorPanel extends BiomechanicsArmPanel {
     super(
       new VBox({
         align: "left",
-        spacing: 6,
+        spacing: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_SPACING,
         children: [
           new Text(options.title, {
-            font: new PhetFont({ size: 15, weight: "bold" }),
+            font: new PhetFont({ size: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_FONT_SIZE, weight: "bold" }),
             fill: options.color,
             maxWidth: innerWidth,
           }),
           new Text(statusProperty, { font: FONT, fill: statusFillProperty, maxWidth: innerWidth }),
           new HBox({
-            spacing: 6,
+            spacing: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_SPACING,
             children: [
               new Text(labels.connectStringProperty, {
                 font: FONT,
                 fill: BiomechanicsArmColors.textColorProperty,
-                maxWidth: 70,
+                maxWidth: SENSOR_PANEL_SETTINGS.CONSTRUCTOR_MAX_WIDTH,
                 visibleProperty: disconnectedProperty,
               }),
               bluetoothButton,
@@ -215,11 +220,11 @@ export class SensorPanel extends BiomechanicsArmPanel {
             ],
           }),
           new Node({ children: [readoutBackground, readoutText] }),
-          new HBox({ spacing: 12, children: [zeroButton, reverseCheckbox] }),
+          new HBox({ spacing: SENSOR_PANEL_SETTINGS.ITEM_5_SPACING, children: [zeroButton, reverseCheckbox] }),
           ...(options.showDiagnostics
             ? [
                 new Text(channel.diagnosticProperty, {
-                  font: new PhetFont(10),
+                  font: new PhetFont(SENSOR_PANEL_SETTINGS.PHET_FONT_FONT_SIZE),
                   fill: BiomechanicsArmColors.warningColorProperty,
                   maxWidth: innerWidth,
                 }),

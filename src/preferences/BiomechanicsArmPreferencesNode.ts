@@ -1,3 +1,4 @@
+import { BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS } from "../BiomechanicsArmConstants.js";
 /**
  * BiomechanicsArmPreferencesNode.ts
  *
@@ -23,27 +24,27 @@ export class BiomechanicsArmPreferencesNode extends VBox {
     // colors (readable on white in both default and projector profiles), not textColorProperty
     // (which is near-white in default mode and would be invisible on the white dialog).
     const header = new Text(prefStrings.titleStringProperty, {
-      font: new PhetFont({ size: 18, weight: "bold" }),
+      font: new PhetFont({ size: BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS.HEADER_FONT_SIZE, weight: "bold" }),
       fill: BiomechanicsArmColors.controlSurfaceTextColorProperty,
     });
 
     const demoModeCheckbox = new Checkbox(
       preferencesModel.demoModeProperty,
       new Text(prefStrings.demoModeStringProperty, {
-        font: new PhetFont(14),
+        font: new PhetFont(BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS.DEMO_MODE_CHECKBOX_FONT_SIZE),
         fill: BiomechanicsArmColors.controlSurfaceTextColorProperty,
       }),
       {
         checkboxColor: BiomechanicsArmColors.controlSurfaceTextColorProperty,
         checkboxColorBackground: BiomechanicsArmColors.controlSurfaceColorProperty,
-        spacing: 8,
+        spacing: BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS.DEMO_MODE_CHECKBOX_SPACING,
         ...(tandem && { tandem: tandem.createTandem("demoModeCheckbox") }),
       },
     );
 
     super({
       align: "left",
-      spacing: 12,
+      spacing: BIOMECHANICS_ARM_PREFERENCES_NODE_SETTINGS.CONSTRUCTOR_SPACING,
       children: [header, demoModeCheckbox],
     });
   }

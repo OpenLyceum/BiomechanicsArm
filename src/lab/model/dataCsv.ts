@@ -1,3 +1,4 @@
+import { DATA_CSV_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * dataCsv.ts
  *
@@ -15,7 +16,7 @@ export type DataPoint = {
 };
 
 export const ANGLE_DECIMALS = 1;
-export const FORCE_DECIMALS = 2;
+export const FORCE_DECIMALS: number = DATA_CSV_SETTINGS.FORCE_DECIMALS;
 
 /** One extra decimal in the file, so the spreadsheet is not limited by the display. */
 const CSV_EXTRA_DECIMALS = 1;

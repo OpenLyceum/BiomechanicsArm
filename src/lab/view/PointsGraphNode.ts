@@ -1,3 +1,4 @@
+import { POINTS_GRAPH_NODE_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * PointsGraphNode.ts
  *
@@ -28,15 +29,15 @@ import { StringManager } from "../../i18n/StringManager.js";
 import type { DataPoint } from "../model/dataCsv.js";
 import { axisRange, decimalsFor } from "./formatting.js";
 
-const LABEL_FONT = new PhetFont(13);
-const TICK_FONT = new PhetFont(11);
+const LABEL_FONT = new PhetFont(POINTS_GRAPH_NODE_SETTINGS.LABEL_FONT_SIZE);
+const TICK_FONT = new PhetFont(POINTS_GRAPH_NODE_SETTINGS.TICK_FONT_SIZE);
 
 /** Axis spans shown before any data: a half turn, and a few newtons. */
-const DEFAULT_MAX_ANGLE = 180;
-const DEFAULT_MAX_FORCE = 5;
+const DEFAULT_MAX_ANGLE: number = POINTS_GRAPH_NODE_SETTINGS.DEFAULT_MAX_ANGLE;
+const DEFAULT_MAX_FORCE: number = POINTS_GRAPH_NODE_SETTINGS.DEFAULT_MAX_FORCE;
 
 /** Preferred spacing of the angle axis, degrees. */
-const ANGLE_STEP = 30;
+const ANGLE_STEP: number = POINTS_GRAPH_NODE_SETTINGS.ANGLE_STEP;
 
 export type PointsGraphNodeOptions = {
   readonly viewWidth: number;
@@ -66,7 +67,10 @@ export class PointsGraphNode extends Node {
       stroke: BiomechanicsArmColors.panelBorderColorProperty,
     });
 
-    const gridOptions = { stroke: BiomechanicsArmColors.chartGridColorProperty, lineWidth: 0.5 };
+    const gridOptions = {
+      stroke: BiomechanicsArmColors.chartGridColorProperty,
+      lineWidth: POINTS_GRAPH_NODE_SETTINGS.GRID_OPTIONS_LINE_WIDTH,
+    };
     const xGrid = new GridLineSet(chartTransform, Orientation.HORIZONTAL, 30, gridOptions);
     const yGrid = new GridLineSet(chartTransform, Orientation.VERTICAL, 1, gridOptions);
 
@@ -87,12 +91,12 @@ export class PointsGraphNode extends Node {
     });
 
     const plot = new ScatterPlot(chartTransform, [], {
-      radius: 4,
+      radius: POINTS_GRAPH_NODE_SETTINGS.PLOT_RADIUS,
       fill: BiomechanicsArmColors.pointColorProperty,
     });
-    const liveMarker = new Circle(6, {
+    const liveMarker = new Circle(POINTS_GRAPH_NODE_SETTINGS.LIVE_MARKER_RADIUS, {
       stroke: BiomechanicsArmColors.liveMarkerColorProperty,
-      lineWidth: 2,
+      lineWidth: POINTS_GRAPH_NODE_SETTINGS.LIVE_MARKER_LINE_WIDTH,
       pickable: false,
     });
     const plotLayer = new Node({
@@ -152,9 +156,9 @@ export class PointsGraphNode extends Node {
         xLabel.fill = angleOnX ? BiomechanicsArmColors.angleColorProperty : BiomechanicsArmColors.forceColorProperty;
         yLabel.fill = angleOnX ? BiomechanicsArmColors.forceColorProperty : BiomechanicsArmColors.angleColorProperty;
         xLabel.centerX = viewWidth / 2;
-        xLabel.top = viewHeight + 24;
+        xLabel.top = viewHeight + POINTS_GRAPH_NODE_SETTINGS.CONSTRUCTOR_TOP_OFFSET;
         yLabel.centerY = viewHeight / 2;
-        yLabel.right = -34;
+        yLabel.right = POINTS_GRAPH_NODE_SETTINGS.RIGHT_RIGHT;
       },
     );
 

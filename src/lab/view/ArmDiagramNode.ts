@@ -1,3 +1,4 @@
+import { ARM_DIAGRAM_NODE_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * ArmDiagramNode.ts
  *
@@ -18,9 +19,9 @@ import BiomechanicsArmColors from "../../BiomechanicsArmColors.js";
 import { StringManager } from "../../i18n/StringManager.js";
 
 /** Where along the rod the string is tied and the cylinder sits, as fractions of its length. */
-const STRING_FRACTION = 0.5;
-const CYLINDER_FRACTION = 0.88;
-const ARC_RADIUS = 26;
+const STRING_FRACTION: number = ARM_DIAGRAM_NODE_SETTINGS.STRING_FRACTION;
+const CYLINDER_FRACTION: number = ARM_DIAGRAM_NODE_SETTINGS.CYLINDER_FRACTION;
+const ARC_RADIUS: number = ARM_DIAGRAM_NODE_SETTINGS.ARC_RADIUS;
 
 export type ArmDiagramNodeOptions = {
   readonly width: number;
@@ -39,30 +40,45 @@ export class ArmDiagramNode extends Node {
     const rodLength = Math.min(width, height) / 2 - 12;
 
     const background = new Rectangle(0, 0, width, height, {
-      cornerRadius: 4,
+      cornerRadius: ARM_DIAGRAM_NODE_SETTINGS.BACKGROUND_CORNER_RADIUS,
       fill: BiomechanicsArmColors.chartBackgroundColorProperty,
       stroke: BiomechanicsArmColors.panelBorderColorProperty,
     });
     const zeroLine = new Line(pivotX, pivotY, pivotX, pivotY + rodLength, {
       stroke: BiomechanicsArmColors.chartGridColorProperty,
-      lineDash: [4, 4],
+      lineDash: [
+        ARM_DIAGRAM_NODE_SETTINGS.ZERO_LINE_LINE_DASH_DASH,
+        ARM_DIAGRAM_NODE_SETTINGS.ZERO_LINE_LINE_DASH_DASH,
+      ],
     });
-    const arc = new Path(null, { stroke: BiomechanicsArmColors.angleColorProperty, lineWidth: 2 });
-    const string = new Line(0, 0, 0, 0, { stroke: BiomechanicsArmColors.forceColorProperty, lineWidth: 1.5 });
-    const forceSensor = new Rectangle(0, 0, 14, 20, {
-      cornerRadius: 2,
-      fill: BiomechanicsArmColors.forceColorProperty,
+    const arc = new Path(null, {
+      stroke: BiomechanicsArmColors.angleColorProperty,
+      lineWidth: ARM_DIAGRAM_NODE_SETTINGS.ARC_LINE_WIDTH,
     });
+    const string = new Line(0, 0, 0, 0, {
+      stroke: BiomechanicsArmColors.forceColorProperty,
+      lineWidth: ARM_DIAGRAM_NODE_SETTINGS.STRING_LINE_WIDTH,
+    });
+    const forceSensor = new Rectangle(
+      0,
+      0,
+      ARM_DIAGRAM_NODE_SETTINGS.FORCE_SENSOR_WIDTH,
+      ARM_DIAGRAM_NODE_SETTINGS.FORCE_SENSOR_HEIGHT,
+      {
+        cornerRadius: ARM_DIAGRAM_NODE_SETTINGS.FORCE_SENSOR_CORNER_RADIUS,
+        fill: BiomechanicsArmColors.forceColorProperty,
+      },
+    );
     const rod = new Line(0, 0, 0, 0, {
       stroke: BiomechanicsArmColors.rodColorProperty,
-      lineWidth: 6,
+      lineWidth: ARM_DIAGRAM_NODE_SETTINGS.ROD_LINE_WIDTH,
       lineCap: "round",
     });
-    const cylinder = new Circle(9, {
+    const cylinder = new Circle(ARM_DIAGRAM_NODE_SETTINGS.CYLINDER_RADIUS, {
       fill: BiomechanicsArmColors.cylinderColorProperty,
       stroke: BiomechanicsArmColors.rodColorProperty,
     });
-    const pivot = new Circle(5, {
+    const pivot = new Circle(ARM_DIAGRAM_NODE_SETTINGS.PIVOT_RADIUS, {
       fill: BiomechanicsArmColors.angleColorProperty,
       stroke: BiomechanicsArmColors.rodColorProperty,
       x: pivotX,

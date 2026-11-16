@@ -1,3 +1,4 @@
+import { LAB_SCREEN_VIEW_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * LabScreenView.ts
  *
@@ -49,13 +50,13 @@ type SelfOptions = {
 
 export type LabScreenViewOptions = SelfOptions & ScreenViewOptions;
 
-const MARGIN = 15;
-const COLUMN_SPACING = 14;
-const LEFT_WIDTH = 286;
-const CENTER_WIDTH = 262;
-const DIAGRAM_HEIGHT = 150;
-const BUTTON_FONT = new PhetFont({ size: 14, weight: "bold" });
-const FONT = new PhetFont(12);
+const MARGIN: number = LAB_SCREEN_VIEW_SETTINGS.MARGIN;
+const COLUMN_SPACING: number = LAB_SCREEN_VIEW_SETTINGS.COLUMN_SPACING;
+const LEFT_WIDTH: number = LAB_SCREEN_VIEW_SETTINGS.LEFT_WIDTH;
+const CENTER_WIDTH: number = LAB_SCREEN_VIEW_SETTINGS.CENTER_WIDTH;
+const DIAGRAM_HEIGHT: number = LAB_SCREEN_VIEW_SETTINGS.DIAGRAM_HEIGHT;
+const BUTTON_FONT = new PhetFont({ size: LAB_SCREEN_VIEW_SETTINGS.BUTTON_FONT_SIZE, weight: "bold" });
+const FONT = new PhetFont(LAB_SCREEN_VIEW_SETTINGS.FONT_FONT_SIZE);
 
 export class LabScreenView extends ScreenView {
   public constructor(model: LabModel, providedOptions: LabScreenViewOptions) {
@@ -94,8 +95,8 @@ export class LabScreenView extends ScreenView {
         accessibleName: label,
         enabledProperty,
         listener,
-        xMargin: 12,
-        yMargin: 7,
+        xMargin: LAB_SCREEN_VIEW_SETTINGS.PUSH_BUTTON_X_MARGIN,
+        yMargin: LAB_SCREEN_VIEW_SETTINGS.PUSH_BUTTON_Y_MARGIN,
         ...extra,
       });
 
@@ -165,7 +166,7 @@ export class LabScreenView extends ScreenView {
 
     const leftColumn = new VBox({
       align: "left",
-      spacing: 10,
+      spacing: LAB_SCREEN_VIEW_SETTINGS.LEFT_COLUMN_SPACING,
       children: [forcePanel, anglePanel, zeroBothButton, hardwareNote],
       left: bounds.minX + MARGIN,
       top: bounds.minY + MARGIN,
@@ -179,21 +180,21 @@ export class LabScreenView extends ScreenView {
 
     const demoSlider = new HSlider(model.demoAngleProperty, model.demoAngleProperty.range, {
       ...BIOMECHANICS_ARM_SLIDER_OPTIONS,
-      trackSize: new Dimension2(CENTER_WIDTH - 130, 3),
-      keyboardStep: 5,
+      trackSize: new Dimension2(CENTER_WIDTH - 130, LAB_SCREEN_VIEW_SETTINGS.DEMO_SLIDER_HEIGHT),
+      keyboardStep: LAB_SCREEN_VIEW_SETTINGS.DEMO_SLIDER_KEYBOARD_STEP,
       shiftKeyboardStep: 1,
-      pageKeyboardStep: 15,
+      pageKeyboardStep: LAB_SCREEN_VIEW_SETTINGS.DEMO_SLIDER_PAGE_KEYBOARD_STEP,
       accessibleName: labels.demoAngleStringProperty,
       accessibleHelpText: a11y.controls.demoAngleHelpStringProperty,
     });
     const demoControl = new HBox({
-      spacing: 8,
+      spacing: LAB_SCREEN_VIEW_SETTINGS.DEMO_CONTROL_SPACING,
       visibleProperty: options.demoModeProperty,
       children: [
         new Text(labels.demoAngleStringProperty, {
           font: FONT,
           fill: BiomechanicsArmColors.textColorProperty,
-          maxWidth: 100,
+          maxWidth: LAB_SCREEN_VIEW_SETTINGS.DEMO_CONTROL_MAX_WIDTH,
         }),
         demoSlider,
       ],
@@ -211,9 +212,15 @@ export class LabScreenView extends ScreenView {
         );
       }
     };
-    const recordButton = pushButton(labels.recordPointStringProperty, recordPoint, model.canRecordProperty, 160, {
-      accessibleHelpText: a11y.controls.recordPointHelpStringProperty,
-    });
+    const recordButton = pushButton(
+      labels.recordPointStringProperty,
+      recordPoint,
+      model.canRecordProperty,
+      LAB_SCREEN_VIEW_SETTINGS.RECORD_POINT_PUSH_BUTTON_MAX_WIDTH,
+      {
+        accessibleHelpText: a11y.controls.recordPointHelpStringProperty,
+      },
+    );
 
     const dataTable = new DataTableNode(model.pointsProperty, {
       width: CENTER_WIDTH,
@@ -227,7 +234,7 @@ export class LabScreenView extends ScreenView {
 
     const centerColumn = new VBox({
       align: "center",
-      spacing: 8,
+      spacing: LAB_SCREEN_VIEW_SETTINGS.CENTER_COLUMN_SPACING,
       children: [armDiagram, demoControl, recordButton, dataTable],
       left: leftColumn.left + LEFT_WIDTH + COLUMN_SPACING,
       top: bounds.minY + MARGIN,
@@ -242,17 +249,17 @@ export class LabScreenView extends ScreenView {
       model.angleDegreesProperty,
       model.forceChannel.valueProperty,
       bothConnectedProperty,
-      { viewWidth: graphWidth, viewHeight: 360 },
+      { viewWidth: graphWidth, viewHeight: LAB_SCREEN_VIEW_SETTINGS.GRAPH_VIEW_HEIGHT },
     );
     graph.x = graphLeft;
-    graph.y = bounds.minY + MARGIN + 6;
+    graph.y = bounds.minY + MARGIN + LAB_SCREEN_VIEW_SETTINGS.CONSTRUCTOR_Y_OFFSET;
 
     const swapAxesCheckbox = new Checkbox(
       model.axesSwappedProperty,
       new Text(labels.swapAxesStringProperty, {
         font: FONT,
         fill: BiomechanicsArmColors.textColorProperty,
-        maxWidth: 140,
+        maxWidth: LAB_SCREEN_VIEW_SETTINGS.SWAP_AXES_CHECKBOX_MAX_WIDTH,
       }),
       { ...BIOMECHANICS_ARM_CHECKBOX_OPTIONS, accessibleName: labels.swapAxesStringProperty },
     );
@@ -264,7 +271,7 @@ export class LabScreenView extends ScreenView {
         this.addAccessibleContextResponse(a11y.responses.dataClearedStringProperty.value);
       },
       hasPointsProperty,
-      120,
+      LAB_SCREEN_VIEW_SETTINGS.CLEAR_DATA_PUSH_BUTTON_MAX_WIDTH,
     );
     const downloadButton = pushButton(
       labels.downloadCsvStringProperty,
@@ -280,15 +287,21 @@ export class LabScreenView extends ScreenView {
         this.addAccessibleContextResponse(a11y.responses.csvDownloadedStringProperty.value);
       },
       hasPointsProperty,
-      140,
+      LAB_SCREEN_VIEW_SETTINGS.DOWNLOAD_CSV_PUSH_BUTTON_MAX_WIDTH,
     );
 
     const dataControls = new VBox({
       align: "left",
-      spacing: 10,
-      children: [swapAxesCheckbox, new HBox({ spacing: 10, children: [clearButton, downloadButton] })],
-      left: graphLeft - 40,
-      top: graph.y + 360 + 52,
+      spacing: LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_SPACING,
+      children: [
+        swapAxesCheckbox,
+        new HBox({ spacing: LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_SPACING, children: [clearButton, downloadButton] }),
+      ],
+      left: graphLeft - LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_LEFT_OFFSET,
+      top:
+        graph.y +
+        LAB_SCREEN_VIEW_SETTINGS.DATA_CONTROLS_TOP_OFFSET +
+        LAB_SCREEN_VIEW_SETTINGS.CONSTRUCTOR_DATA_CONTROLS_TOP_OFFSET,
     });
 
     const resetAllButton = new ResetAllButton({

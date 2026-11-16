@@ -1,3 +1,4 @@
+import { DATA_TABLE_NODE_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * DataTableNode.ts
  *
@@ -17,11 +18,11 @@ import { FLAT_PANEL_PUSH_BUTTON_OPTIONS, LIGHT_SURFACE_TEXT_FILL } from "../../c
 import { StringManager } from "../../i18n/StringManager.js";
 import { ANGLE_DECIMALS, type DataPoint, FORCE_DECIMALS } from "../model/dataCsv.js";
 
-const FONT = new PhetFont(12);
-const HEADER_FONT = new PhetFont({ size: 12, weight: "bold" });
-const ROW_HEIGHT = 17;
-const HEADER_HEIGHT = 22;
-const DELETE_SIZE = 9;
+const FONT = new PhetFont(DATA_TABLE_NODE_SETTINGS.FONT_FONT_SIZE);
+const HEADER_FONT = new PhetFont({ size: DATA_TABLE_NODE_SETTINGS.HEADER_FONT_SIZE, weight: "bold" });
+const ROW_HEIGHT: number = DATA_TABLE_NODE_SETTINGS.ROW_HEIGHT;
+const HEADER_HEIGHT: number = DATA_TABLE_NODE_SETTINGS.HEADER_HEIGHT;
+const DELETE_SIZE: number = DATA_TABLE_NODE_SETTINGS.DELETE_SIZE;
 
 export type DataTableNodeOptions = {
   readonly width: number;
@@ -38,12 +39,12 @@ export class DataTableNode extends Node {
     const height = HEADER_HEIGHT + MAX_POINTS * ROW_HEIGHT + 4;
 
     // Right edges of the three columns; the delete buttons sit after the last.
-    const indexRight = 26;
+    const indexRight: number = DATA_TABLE_NODE_SETTINGS.INDEX_RIGHT;
     const angleRight = indexRight + (width - 58) / 2;
     const forceRight = width - 32;
 
     const background = new Rectangle(0, 0, width, height, {
-      cornerRadius: 4,
+      cornerRadius: DATA_TABLE_NODE_SETTINGS.BACKGROUND_CORNER_RADIUS,
       fill: BiomechanicsArmColors.chartBackgroundColorProperty,
       stroke: BiomechanicsArmColors.panelBorderColorProperty,
     });
@@ -53,14 +54,20 @@ export class DataTableNode extends Node {
       right: number,
       fill: typeof BiomechanicsArmColors.textColorProperty,
     ) => {
-      const text = new Text(label, { font: HEADER_FONT, fill, maxWidth: (width - 58) / 2 - 6 });
+      const text = new Text(label, {
+        font: HEADER_FONT,
+        fill,
+        maxWidth:
+          (width - DATA_TABLE_NODE_SETTINGS.TEXT_MAX_WIDTH_OFFSET) / 2 -
+          DATA_TABLE_NODE_SETTINGS.HEADER_TEXT_MAX_WIDTH_OFFSET,
+      });
       text.boundsProperty.link(() => {
         text.right = right;
         text.centerY = HEADER_HEIGHT / 2;
       });
       return text;
     };
-    const rule = new Line(4, HEADER_HEIGHT, width - 4, HEADER_HEIGHT, {
+    const rule = new Line(DATA_TABLE_NODE_SETTINGS.RULE_START_X, HEADER_HEIGHT, width - 4, HEADER_HEIGHT, {
       stroke: BiomechanicsArmColors.chartGridColorProperty,
     });
 
@@ -75,19 +82,22 @@ export class DataTableNode extends Node {
       const force = cell();
       const deleteButton = new RectangularPushButton({
         ...FLAT_PANEL_PUSH_BUTTON_OPTIONS,
-        content: new Text("×", { font: new PhetFont({ size: 12, weight: "bold" }), fill: LIGHT_SURFACE_TEXT_FILL }),
-        xMargin: 3,
+        content: new Text("×", {
+          font: new PhetFont({ size: DATA_TABLE_NODE_SETTINGS.DELETE_BUTTON_FONT_SIZE, weight: "bold" }),
+          fill: LIGHT_SURFACE_TEXT_FILL,
+        }),
+        xMargin: DATA_TABLE_NODE_SETTINGS.DELETE_BUTTON_X_MARGIN,
         yMargin: 0,
         minWidth: DELETE_SIZE,
         minHeight: DELETE_SIZE,
-        touchAreaXDilation: 4,
-        touchAreaYDilation: 2,
+        touchAreaXDilation: DATA_TABLE_NODE_SETTINGS.DELETE_BUTTON_TOUCH_AREA_X_DILATION,
+        touchAreaYDilation: DATA_TABLE_NODE_SETTINGS.DELETE_BUTTON_TOUCH_AREA_Y_DILATION,
         accessibleName: new DerivedProperty([a11y.controls.deletePointPatternStringProperty], (pattern) =>
           StringUtils.fillIn(pattern, { number: i + 1 }),
         ),
         listener: () => options.onDelete(i),
       });
-      deleteButton.right = width - 6;
+      deleteButton.right = width - DATA_TABLE_NODE_SETTINGS.CONSTRUCTOR_RIGHT_OFFSET;
       deleteButton.centerY = centerY;
       const row = new Node({ children: [index, angle, force, deleteButton], visible: false });
       rows.push(row);

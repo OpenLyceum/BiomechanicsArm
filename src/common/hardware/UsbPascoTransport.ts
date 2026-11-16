@@ -1,3 +1,4 @@
+import { USB_PASCO_TRANSPORT_SETTINGS } from "../../BiomechanicsArmConstants.js";
 /**
  * UsbPascoTransport.ts
  *
@@ -25,13 +26,13 @@ import { parseUsbTransfer, usbWriteFrame } from "./PascoProtocol.js";
 import { DeviceSelectionCancelled, type PacketListener, type TPascoTransport } from "./PascoTransport.js";
 
 /** PASCO scientific. */
-const PASCO_USB_VENDOR_ID = 0x0945;
+const PASCO_USB_VENDOR_ID: number = USB_PASCO_TRANSPORT_SETTINGS.PASCO_USB_VENDOR_ID;
 
 /** Fallback transfer size, replaced at connect by the IN endpoint's own `packetSize`. */
-const TRANSFER_BYTES = 64;
+const TRANSFER_BYTES: number = USB_PASCO_TRANSPORT_SETTINGS.TRANSFER_BYTES;
 
 /** Consecutive failed reads after which the link is considered lost. */
-const READ_FAILURE_TOLERANCE = 3;
+const READ_FAILURE_TOLERANCE: number = USB_PASCO_TRANSPORT_SETTINGS.READ_FAILURE_TOLERANCE;
 
 /** Vendor control requests the bridge wants before it carries bulk traffic. */
 const BRIDGE = {

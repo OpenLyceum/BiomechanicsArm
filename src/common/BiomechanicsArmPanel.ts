@@ -1,3 +1,4 @@
+import { BIOMECHANICS_ARM_PANEL_SETTINGS } from "../BiomechanicsArmConstants.js";
 /**
  * BiomechanicsArmPanel.ts
  *
@@ -40,8 +41,8 @@ export class BiomechanicsArmPanel extends Panel {
         fill: BiomechanicsArmColors.panelBackgroundColorProperty,
         stroke: BiomechanicsArmColors.panelBorderColorProperty,
         cornerRadius: PANEL_CORNER_RADIUS,
-        xMargin: 12,
-        yMargin: 10,
+        xMargin: BIOMECHANICS_ARM_PANEL_SETTINGS.OPTIONS_X_MARGIN,
+        yMargin: BIOMECHANICS_ARM_PANEL_SETTINGS.OPTIONS_Y_MARGIN,
       },
       providedOptions,
     );
