@@ -58,6 +58,8 @@ changing hardware or model code.
 - **Reset All keeps connections.** It clears points, zeros and settings only.
 - **No hardware in tests.** Use `tests/helpers/FakeSensorDevice.ts` or a fake
   `TPascoTransport` (see `tests/SensorDevice.test.ts`).
+- Both `tsconfig.json` and `tsconfig.test.json` include the `web-bluetooth` and
+  `w3c-web-usb` types.
 - The dev server port 5173 may be taken by another sim; any free port works.
 
 ## Accessibility
@@ -69,12 +71,7 @@ response. Alt+P records a point and Alt+0 zeroes both sensors from anywhere on
 the screen (`LabKeyboardHelpContent.ts` holds the `HotkeyData`). Full convention:
 [Baton/ACCESSIBILITY.md](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
 
-## Compliance carve-outs
-
-- `tsconfig.json` and `tsconfig.test.json`: add the `web-bluetooth` and
-  `w3c-web-usb` types.
-
-### `package.json` overrides
+## `package.json` overrides
 
 JSON cannot carry comments, so the rationale for forced transitive pins lives here. Prefer
 **tilde (`~`) or exact** versions — caret (`^`) lets minors drift under what is meant to be a
