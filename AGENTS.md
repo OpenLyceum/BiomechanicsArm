@@ -90,7 +90,8 @@ open PRs that fight the overrides. Revisit when SceneryStack drops or re-pins th
 |---|---|
 | `tests/PascoProtocol.test.ts` | Commands, force and rotary decoding, USB envelope |
 | `tests/SensorDevice.test.ts` | Set-up sequence, per-channel acknowledgements, disconnect, against a fake transport |
-| `tests/SensorChannel.test.ts` | Averaging, zero, reverse, cancelled picker, failures, dropped link |
+| `tests/SensorChannel.test.ts` | Averaging, zero, reverse, cancelled picker, failures, dropped link, attempts superseded by Disconnect or dispose |
+| `tests/BluetoothPascoTransport.test.ts` | Notification listeners removed when starting fails or Disconnect lands meanwhile (mocked Web Bluetooth) |
 | `tests/LabModel.test.ts` | Recording, delete/clear, reset, CSV, demo arm physics, axis helpers |
 | `tests/memory-leak.test.ts` | `SensorChannel` and `LabModel` disposal |
 | `tests/fuzz/fuzz.spec.ts` | Template-owned Playwright fuzz (pointer and keyboard) |

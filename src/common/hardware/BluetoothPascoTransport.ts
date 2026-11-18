@@ -85,9 +85,19 @@ export class BluetoothPascoTransport implements TPascoTransport {
         }
         this.characteristics.set(`${address.serviceId}:${address.characteristicId}`, characteristic);
         if (characteristic.properties.notify) {
+          // Record the listener before awaiting, so a disconnect() meanwhile still removes it.
           characteristic.addEventListener("characteristicvaluechanged", this.handleNotification);
-          await characteristic.startNotifications();
           this.subscribed.push(characteristic);
+          try {
+            await characteristic.startNotifications();
+          } catch (error) {
+            characteristic.removeEventListener("characteristicvaluechanged", this.handleNotification);
+            const index = this.subscribed.indexOf(characteristic);
+            if (index >= 0) {
+              this.subscribed.splice(index, 1);
+            }
+            throw error;
+          }
         }
       }
     }

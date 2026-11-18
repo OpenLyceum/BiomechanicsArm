@@ -1,7 +1,29 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { TransportKind } from "../src/common/hardware/PascoTransport.js";
 import { CONNECTION_LOST, ConnectionState, SensorChannel } from "../src/lab/model/SensorChannel.js";
 import { FakeSensorDevice } from "./helpers/FakeSensorDevice.js";
+
+/** A fake device whose connect() and start() wait until the test settles them. */
+class DeferredSensorDevice extends FakeSensorDevice {
+  public readonly connecting = Promise.withResolvers<void>();
+  public readonly starting = Promise.withResolvers<void>();
+  public readonly disconnectSpy = vi.fn();
+
+  public override async connect(): Promise<void> {
+    await this.connecting.promise;
+    await super.connect();
+  }
+
+  public override async start(periodMs: number, onSample: (value: number) => void): Promise<void> {
+    await super.start(periodMs, onSample);
+    await this.starting.promise;
+  }
+
+  public override disconnect(): Promise<void> {
+    this.disconnectSpy();
+    return super.disconnect();
+  }
+}
 
 const setup = (averagingSamples = 1) => {
   const device = new FakeSensorDevice();
@@ -100,5 +122,71 @@ describe("SensorChannel", () => {
     expect(device.connected).toBe(false);
     expect(channel.connectionStateProperty.value).toBe(ConnectionState.DISCONNECTED);
     expect(channel.deviceNameProperty.value).toBeNull();
+  });
+
+  describe("an attempt superseded while pending", () => {
+    const deferredSetup = () => {
+      const devices: DeferredSensorDevice[] = [];
+      const channel = new SensorChannel(
+        () => {
+          const device = new DeferredSensorDevice();
+          devices.push(device);
+          return device;
+        },
+        { periodMs: 50, averagingSamples: 1 },
+      );
+      return { devices, channel };
+    };
+
+    it("disconnects its own device when Disconnect lands during connect()", async () => {
+      const { devices, channel } = deferredSetup();
+      const connecting = channel.connect(TransportKind.BLUETOOTH);
+      await channel.disconnect();
+      devices[0]!.connecting.resolve();
+      await connecting;
+      expect(devices[0]!.connected).toBe(false);
+      expect(devices[0]!.disconnectSpy).toHaveBeenCalledTimes(2);
+      expect(channel.connectionStateProperty.value).toBe(ConnectionState.DISCONNECTED);
+      expect(channel.deviceNameProperty.value).toBeNull();
+    });
+
+    it("disconnects its own device when Disconnect lands during start()", async () => {
+      const { devices, channel } = deferredSetup();
+      const connecting = channel.connect(TransportKind.BLUETOOTH);
+      devices[0]!.connecting.resolve();
+      await vi.waitFor(() => expect(channel.deviceNameProperty.value).toBe("Fake 000-001"));
+      await channel.disconnect();
+      devices[0]!.starting.resolve();
+      await connecting;
+      expect(devices[0]!.connected).toBe(false);
+      expect(channel.connectionStateProperty.value).toBe(ConnectionState.DISCONNECTED);
+    });
+
+    it("leaves a newer attempt alone when the old one finishes or fails late", async () => {
+      const { devices, channel } = deferredSetup();
+      const first = channel.connect(TransportKind.BLUETOOTH);
+      await channel.disconnect();
+      const second = channel.connect(TransportKind.USB);
+      devices[1]!.connecting.resolve();
+      devices[1]!.starting.resolve();
+      await second;
+      devices[0]!.connecting.reject(new Error("GATT Server is disconnected"));
+      await first;
+      expect(devices[0]!.disconnectSpy).toHaveBeenCalledTimes(2);
+      expect(devices[1]!.disconnectSpy).not.toHaveBeenCalled();
+      expect(channel.connectionStateProperty.value).toBe(ConnectionState.CONNECTED);
+      expect(channel.errorMessageProperty.value).toBeNull();
+      devices[1]!.emit(2);
+      expect(channel.valueProperty.value).toBe(2);
+    });
+
+    it("disconnects its own device when disposed during connect()", async () => {
+      const { devices, channel } = deferredSetup();
+      const connecting = channel.connect(TransportKind.BLUETOOTH);
+      channel.dispose();
+      devices[0]!.connecting.resolve();
+      await connecting;
+      expect(devices[0]!.connected).toBe(false);
+    });
   });
 });

@@ -88,29 +88,46 @@ export class SensorChannel {
     this.errorMessageProperty.value = null;
     this.connectionStateProperty.value = ConnectionState.CONNECTING;
     this.transportKindProperty.value = kind;
+    // Each attempt gets a fresh device, so `this.device !== device` means Disconnect,
+    // dispose or a newer attempt replaced this one while it was awaiting.
+    let device: TSensorDevice | null = null;
+    const isStale = () => this.device !== device;
     try {
-      const device = this.createDevice(kind);
-      device.onUnexpectedDisconnect(() => {
-        if (this.device === device) {
+      device = this.createDevice(kind);
+      const thisDevice = device;
+      thisDevice.onUnexpectedDisconnect(() => {
+        if (this.device === thisDevice) {
           this.device = null;
           this.connectionStateProperty.value = ConnectionState.DISCONNECTED;
           this.deviceNameProperty.value = null;
           this.errorMessageProperty.value = CONNECTION_LOST;
         }
       });
-      this.device = device;
-      await device.connect();
-      this.deviceNameProperty.value = device.name;
+      this.device = thisDevice;
+      await thisDevice.connect();
+      if (isStale()) {
+        await thisDevice.disconnect().catch(() => undefined);
+        return;
+      }
+      this.deviceNameProperty.value = thisDevice.name;
       this.window.length = 0;
       this.zeroOffset = 0;
-      await device.start(this.periodMs, (value) => {
-        if (this.device === device) {
+      await thisDevice.start(this.periodMs, (value) => {
+        if (this.device === thisDevice) {
           this.accept(value);
         }
       });
+      if (isStale()) {
+        await thisDevice.disconnect().catch(() => undefined);
+        return;
+      }
       this.connectionStateProperty.value = ConnectionState.CONNECTED;
     } catch (error) {
-      const device = this.device;
+      if (device && isStale()) {
+        // Superseded: release this attempt's own device and leave the state alone.
+        await device.disconnect().catch(() => undefined);
+        return;
+      }
       this.device = null;
       await device?.disconnect().catch(() => undefined);
       this.connectionStateProperty.value = ConnectionState.DISCONNECTED;
