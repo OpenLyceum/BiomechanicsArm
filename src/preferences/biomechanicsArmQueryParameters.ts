@@ -39,7 +39,9 @@ const biomechanicsArmQueryParameters = QueryStringMachine.getAll({
 
   /** Show packet counts and raw bytes under each sensor, and log USB bring-up to the console. */
   showDiagnostics: {
-    type: "flag",
+    type: "custom",
+    defaultValue: false,
+    parse: (value: string | null): boolean => value === null || value === "true",
   },
 });
 
