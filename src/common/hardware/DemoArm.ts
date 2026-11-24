@@ -17,7 +17,7 @@
  * zeroed.
  */
 
-import { dotRandom } from "scenerystack/dot";
+import { dotRandom, roundSymmetric } from "scenerystack/dot";
 import {
   DEMO_CYLINDER_DISTANCE,
   DEMO_CYLINDER_MASS,
@@ -80,6 +80,7 @@ export class DemoSensorDevice implements TSensorDevice {
 
   public start(periodMs: number, onSample: (value: number) => void): Promise<void> {
     this.angleAtStart = this.arm.angle;
+    // biome-ignore lint/plugin/no-native-timer: async host/hardware delay (not sim step)
     this.timer = setInterval(() => onSample(this.read()), periodMs);
     return Promise.resolve();
   }
@@ -92,7 +93,7 @@ export class DemoSensorDevice implements TSensorDevice {
     // Quantized to whole encoder counts.
     const radiansPerCount = countsToRadians(1);
     return (
-      Math.round((this.arm.angle - this.angleAtStart) / radiansPerCount) *
+      roundSymmetric((this.arm.angle - this.angleAtStart) / radiansPerCount) *
       ((2 * Math.PI) / ROTARY_COUNTS_PER_REVOLUTION)
     );
   }

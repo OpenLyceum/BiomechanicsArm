@@ -1,3 +1,5 @@
+import { roundSymmetric } from "scenerystack/dot";
+
 /**
  * PascoProtocol.ts
  *
@@ -89,13 +91,13 @@ export function keepaliveCommand(): number[] {
 }
 
 export function setSamplePeriodCommand(periodMilliseconds: number): number[] {
-  const us = Math.round(periodMilliseconds * 1000);
+  const us = roundSymmetric(periodMilliseconds * 1000);
   return [SET_SAMPLE_PERIOD, us & 0xff, (us >>> 8) & 0xff, (us >>> 16) & 0xff, (us >>> 24) & 0xff, 0, 0];
 }
 
 /** One period per channel, in channel order. */
 export function startSamplingCommand(periodMilliseconds: number, channelCount: number): number[] {
-  const ms = Math.round(periodMilliseconds) & 0x7ff;
+  const ms = roundSymmetric(periodMilliseconds) & 0x7ff;
   const bytes = [START_SAMPLING];
   for (let i = 0; i < channelCount; i++) {
     bytes.push(ms & 0xff, (ms >>> 8) & 0xff);
