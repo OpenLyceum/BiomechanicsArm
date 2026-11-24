@@ -127,3 +127,7 @@ without a second edit.
 
 After `npm run build`, the sim is installable offline via Workbox (`dist/manifest.webmanifest`).
 Web Bluetooth and WebUSB need HTTPS or localhost, and Chrome or Edge.
+
+## Compliance carve-outs
+
+None.
